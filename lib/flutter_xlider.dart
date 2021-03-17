@@ -1938,18 +1938,27 @@ class _FlutterSliderState extends State<FlutterSlider> with TickerProviderStateM
       top: top,
       bottom: bottom,
       child: Center(
-        child: Container(
-          height: height,
-          width: width,
-          decoration: BoxDecoration(
-              color: trackBarColor,
-              backgroundBlendMode: boxDecoration.backgroundBlendMode,
-              shape: boxDecoration.shape,
-              gradient: boxDecoration.gradient,
-              border: boxDecoration.border,
-              borderRadius: boxDecoration.borderRadius,
-              boxShadow: boxDecoration.boxShadow,
-              image: boxDecoration.image),
+        child: ClipRRect(
+          borderRadius: boxDecoration.borderRadius,
+          //borderRadius: BorderRadius.vertical(bottom: Radius.circular(12)),
+          child: ClipPath(
+            //clipper: BoxClipper(clipX: 266 - width),
+            clipper: BoxClipper(clipY: height),
+            clipBehavior: Clip.hardEdge,
+            child: Container(
+              width: double.infinity,
+              height: height + 100,
+              decoration: BoxDecoration(
+                  color: trackBarColor,
+                  backgroundBlendMode: boxDecoration.backgroundBlendMode,
+                  shape: boxDecoration.shape,
+                  gradient: boxDecoration.gradient,
+                  border: boxDecoration.border,
+                  borderRadius: boxDecoration.borderRadius,
+                  boxShadow: boxDecoration.boxShadow,
+                  image: boxDecoration.image),
+            ),
+          ),
         ),
       ),
     );
@@ -2221,6 +2230,7 @@ class FlutterSliderTooltipBox {
 class FlutterSliderTrackBar {
   final BoxDecoration inactiveTrackBar;
   final BoxDecoration activeTrackBar;
+  final double borderRadius;
   final Color activeDisabledTrackBarColor;
   final Color inactiveDisabledTrackBarColor;
   final double activeTrackBarHeight;
@@ -2231,6 +2241,7 @@ class FlutterSliderTrackBar {
   const FlutterSliderTrackBar({
     this.inactiveTrackBar,
     this.activeTrackBar,
+    this.borderRadius,
     this.activeDisabledTrackBarColor = const Color(0xffb5b5b5),
     this.inactiveDisabledTrackBarColor = const Color(0xffe5e5e5),
     this.activeTrackBarHeight = 3.5,
@@ -2423,3 +2434,22 @@ class FlutterSliderRangeStep {
 
 enum FlutterSliderTooltipDirection { top, left, right }
 enum FlutterSliderHatchMarkAlignment { left, right }
+
+class BoxClipper extends CustomClipper<Path> {
+  final double clipY;
+  BoxClipper({this.clipY});
+  Path getClip(Size size) {
+    var path = Path();
+    path.moveTo(0, size.height);
+    path.lineTo(0.0, size.height - clipY);
+    path.lineTo(size.width, size.height - clipY);
+    path.lineTo(size.width, size.height);
+
+    path.close();
+    return path;
+  }
+
+  @override
+  bool shouldReclip(CustomClipper<Path> oldClipper) => false;
+}
+
