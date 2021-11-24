@@ -243,6 +243,7 @@ class _FlutterSliderState extends State<FlutterSlider> with TickerProviderStateM
         return LayoutBuilder(builder: (BuildContext context, BoxConstraints constraints) {
           _constraintMaxWidth = constraints.maxWidth;
           _constraintMaxHeight = constraints.maxHeight;
+          _arrangeHandlersPosition();
 
           _containerWidthWithoutPadding = _constraintMaxWidth - _handlersWidth!;
           _containerHeightWithoutPadding = _constraintMaxHeight - _handlersHeight!;
@@ -273,8 +274,6 @@ class _FlutterSliderState extends State<FlutterSlider> with TickerProviderStateM
             _rightHandlerYPosition = 0;
 
             _renderBoxInitialization();
-
-            _arrangeHandlersPosition();
 
             _drawHatchMark();
 
