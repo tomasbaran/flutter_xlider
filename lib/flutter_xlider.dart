@@ -85,7 +85,7 @@ class FlutterSlider extends StatefulWidget {
       this.lockDistance,
       this.decoration,
       this.foregroundDecoration})
-      : assert(touchSize == null || (touchSize >= 5 && touchSize <= 50)),
+      : assert(touchSize == null || (touchSize >= 5 && touchSize <= 500)),
         assert((ignoreSteps.length > 0 && step.rangeList == null) ||
             (ignoreSteps.length == 0)),
         assert((step.rangeList != null &&
